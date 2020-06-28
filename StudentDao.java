@@ -8,15 +8,13 @@ import java.sql.Date;
 
 public class StudentDao {
 	
-	 static Connection currentCon = null;
+     static Connection currentCon = null;
      static ResultSet rs = null; 
-	
 	
      public static void storeData(StudentBean bean) {
 	
         //preparing some objects for connection 
         PreparedStatement stmt = null;    
-	
     	String studentID =bean.getStudentID();
         String username= bean.getUsername();
         String street= bean.getStreet();
