@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<!-- @Reabaln-->
+<!-- The main form -->
+
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+    <title>CS Department Survey</title>
+	<script type = "text/javascript" src="http://mason.gmu.edu/~ralnitai/testaccess/jquery.js"> </script>
+	<link href="http://mason.gmu.edu/~ralnitai/testaccess/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script type = "text/javascript" src="http://mason.gmu.edu/~ralnitai/zip.json"> </script>
+	
+	
+	
+	<script type = "text/javascript">
+
+ //////
+ $(document).ready(function(){
+ ;});
+ 
+ $(function() {
+  	    $( " :submit").button();
+		$( "#datepicker" ).datepicker();
+		$( document ).tooltip();
+		$("#ZIP").blur(CityStateJson);
+		$( "#dialog" ).dialog({
+			  autoOpen: false
+			});
+
+
+  }); 
+ 
+ window.document.onload = checkCookie();
+ 		var now = new Date(); // current date and time
+		var expiry = new Date(now.getTime() + 30 * 24 * 3600 * 1000); // plus 30 days
+		var hour = now.getHours(); // current hour (0-23)
+		var name; var street; var city; var state; var zip; var Tnumber; var email;
+
+	 
+	
+	 // reset the document's cookie if wrong person
+	
+	function storeValues(form)  
+		  {
+			setCookie("Username", form.Username.value, 30);
+			setCookie("Address", form.Address.value, 30);
+			setCookie("city", form.city.value, 30);
+			setCookie("state", form.state.value, 30);
+			setCookie("ZIP", form.ZIP.value, 30);
+			setCookie("Tnumber", form.Tnumber.value, 30);
+			setCookie("email", form.email.value, 30);
+			return true;
+		  }
+		  
+	function setCookie(cname,cvalue,exdays) {
+	  var d = new Date();
+	  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	  var expires = "expires=" + d.toGMTString();
+	  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
+	function getCookie(cname) {
+	  var name = cname + "=";
+	  var decodedCookie = decodeURIComponent(document.cookie);
+	  var ca = decodedCookie.split(';');
+	  for(var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+		  c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+		  return c.substring(name.length, c.length);
+		}
+	  }
+	  return "";
+	}
+
+	function checkCookie() {
+	  var user=getCookie("Username");
+	  if (user != "") {
+	  } else {
+		 user = prompt("Please enter your name:","");
+		 if (user != "" && user != null) {
+		   setCookie("Username", user, 30);
+		 }
+	  }
+	
+	 
+	}
+	 function wrongPerson()
+	 {
+	  setCookie("Username", "", -1);
+			setCookie("Address", "", -1);
+			setCookie("city", "", -1);
+			setCookie("state", "", -1);
+			setCookie("ZIP", "" , -1);
+			setCookie("Tnumber", "", -1);
+			setCookie("email", "", -1);
+
+	 // reload the page to get a new Username after removing the cookie
+	 location.reload();
+	 } // end function wrongPerson
+ 
+	if ( hour < 12 ) // determine whether it is morning
+	 document.write( "<h3>Good Morning, " );
+	 else
+	 {
+	 hour = hour - 12; // convert from 24-hour clock to PM time
+
+	 // determine whether it is afternoon or evening
+	 if ( hour < 6 )
+	 document.write( "<h3>Good Afternoon, " );
+	 else
+	 document.write( "<h3>Good Evening, " );
+	 } // end else
+	  var fname=getCookie("Username");
+	if (fname==null) {fname="";}
+	if (fname!="") {fname=fname;}
+	 document.writeln(fname + ", Welcome to Assignment 4</h3>" );
+	 document.writeln( "<a href = 'javascript:wrongPerson()'> " +
+	 "Click here if you are not " + fname + "</a>" );
+
+	function displayCookies() {
+	// Username
+	var fname=getCookie("Username");
+	if (fname==null) {fname="";}
+	if (fname!="") {fname="Username="+fname;}
+	// Street Address
+	var Sreet=getCookie("Address");
+	if (Sreet==null) {Sreet="";}
+	if (Sreet!="") {Sreet="Address="+Sreet;}
+	//ZIP
+	var ZIP=getCookie("ZIP");
+	if (ZIP==null) {ZIP="";}
+	if (ZIP!="") {ZIP="ZIP="+ZIP;}
+	//Tnumber
+	var Tnumber=getCookie("Tnumber");
+	if (Tnumber==null) {Tnumber="";}
+	if (Tnumber!="") {Tnumber="Tnumber="+Tnumber;}
+	//email
+	var email=getCookie("email");
+	if (email==null) {email="";}
+	if (email!="") {email="email="+email;}
+
+	alert (fname + " " + Sreet +  " " + ZIP + " " + Tnumber + " " + email + " " );
+	}
+	function removeCookies() {
+            var res = document.cookie;
+            var multiple = res.split(";");
+            for(var i = 0; i < multiple.length; i++) {
+               var key = multiple[i].split("=");
+               document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+            }}
+	function validateInput() {
+	var DataString = document.getElementById("AvgData").value;
+	var StringArray = DataString.split(',');
+	var max=0;
+	var sum=0;
+	var avg;
+	document.getElementById("msg").innerHTML = "";
+
+	for (var i=0; i<StringArray.length; i++)
+		{
+			StringArray[i] = parseInt(StringArray[i], 10);
+		if ( !isNaN(StringArray[i]) && StringArray[i] > 0 && StringArray[i] < 101 && StringArray.length == 10 ) 
+			{
+			document.getElementById("msg").innerHTML = "Valid Input";
+			
+		}
+		else{
+		document.getElementById("msg").innerHTML = "Invalid Input";
+		
+		return;}
+		}
+	
+
+}
+	function validateForm() {
+		var error = 0;
+		document.getElementById('dialog').innerHTML = ' ';
+
+		
+		// Validating: "The Name text box should contain only Alphabets"  
+		var letters = /^[A-Za-z]+$/;
+		var lettersNumbers = /[^a-zA-Z0-9]+$/;
+		var numbers = /^[0-9]+$/;
+		var emailV = /\S+@\S+\.\S+/;
+	    var a = document.forms["student_survey"]["Username"].value;
+	    if (!a.match(letters)) {
+	        // alert("Name must be filled out");
+	        error++;
+	        document.getElementById('dialog').innerHTML += 'Enter a valid name - Only letters';
+			document.getElementById('Username').value =' ';
+	    }
+		// Validating: The Address text boxes should contain only appropriate numeric, alphabet or alphanumeric characters.
+		var b = document.forms["student_survey"]["Address"].value;
+		var c = document.forms["student_survey"]["ZIP"].value;
+
+	    if (!b.match(letters) || !c.match(numbers)) {
+	        // alert("Name must be filled out");
+	        error++;
+	        document.getElementById('dialog').innerHTML += '<br>Enter a valid address';
+			document.forms["student_survey"]["Address"].value='';
+			document.forms["student_survey"]["ZIP"].value='';
+	    }
+		// Validating: The Student ID text box should contain only appropriate numeric
+	    var id = document.forms["student_survey"]["StudentID"].value;
+	    if ( !id.match(numbers)) {
+	        // alert("Name must be filled out");
+	        error++;
+	        document.getElementById('dialog').innerHTML += '<br>Student ID should contains only numbers';
+			document.forms["student_survey"]["StudentID"].value='';
+	    }
+	    
+	    
+		// Validating: The Email Address should be valid.
+		var d = document.forms["student_survey"]["email"].value;
+		if (!emailV.test(d)) {
+		error++;
+		document.getElementById('dialog').innerHTML += ' <br>  Enter a valid email';
+		document.forms["student_survey"]["email"].value='';
+		}
+		// Validating: Make sure at least two checkboxes are checked.
+		var e = document.querySelectorAll("input:checked").length;
+		if (e<2 ){
+		error++;
+		document.getElementById('dialog').innerHTML += ' <br> Check at least two checkboxes';
+		}
+		
+		if(document.querySelector('input[name="Howinterest[]"]:checked') == null){
+			error++;
+			document.getElementById('dialog').innerHTML += ' <br> Select at least one radio button';
+		}
+		
+		if(error>0) {
+		$( "#dialog" ).dialog("open");
+	        return false;
+	    }
+		
+	    return true;
+		}
+	
+	function clearForm() {
+  document.getElementById("student_survey").reset();
+}
+
+
+
+/////////////////////////////////////////////////////
+
+
+// The event handler makes an Ajax call to the server to get a list of valid Zipcodes along with corresponding City and State.
+// The Ajax calls returns a JSON representation of an array of objects
+function CityStateJson() {    
+	var showData = $('#city');
+
+var items = jsonObject.zipcodes.map(function (item) {
+var zipcode = document.forms["student_survey"]["ZIP"].value;
+
+if (zipcode === item.zip){
+
+    return item.city + ':' + item.state;}
+  });
+  
+  
+  if (items.length) {
+	  var str = items.join("");
+	  var res = str.split(":");
+		document.forms["student_survey"]["city"].value= res[0];
+		document.forms["student_survey"]["state"].value= res[1];
+
+
+  }	  
+  
+}
+
+///////////////////////////////////////////////////////
+	
+</script> 
+<style type="text/css">
+
+#firstDiv {
+  max-width: 62%;
+  margin: auto;
+  background: #F0F0F0	;
+  padding: 10px;
+  }
+#locator { position: fixed; visibility: visible; bottom:70px ; right: 140px; height: 100px; width: 150px; z-index: 200; }
+
+	input[type=text], select, [type=number],input, textarea {
+	  width: 32%;
+	  padding: 8px 20px;
+	  margin: 3px 0;
+	  display: inline-block;
+	  border: 1px solid #515254;
+	  border-radius: 8px;
+	  box-sizing: border-box;
+	}
+
+	fieldset { 
+	width: 600px;
+	}
+	p {font-family: "Times New Roman", Times, serif; font-size:13pt; style="background-color:c6d6c5;"}
+	h2 {  background-color: #1c94c4; }
+
+	
+	.error {
+	color:red;
+	}
+	#city {
+	font-weight: bold
+	}
+	P {
+	 display: block;
+	  margin-top: 1em;
+	  margin-bottom: 0em;
+	  margin-left: 0;
+	  margin-right: 0;
+	    color: green;
+	    font-size: 18px;
+	    
+	  
+		}
+	
+	#msg {
+	color: #1c94c4;
+	}
+	table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  text-align: left;
+  padding: 10px;
+}
+
+</style>
+
+</head>
+<body >
+<div id="firstDiv">
+<h2 align="center">Prospective Student Feedback </h2>
+<div id="dialog" title="Basic dialog">
+
+</div>
+<form name="student_survey" id="student_survey" method="post" action="Controller" autocomplete="on" onsubmit="return storeValues(this);" >
+	<table>
+   <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+	<td><p>Student ID </p></td>
+    <td><p>Username: <span style= color:red>**</span></p></td>
+	<td><p> Street address: </p></td> 
+  </tr>
+  
+  <tr>
+  	<td> <input type="text" id="StudentID" name="StudentID" placeholder="Student ID" style= "width: 100%"></td>
+    <td><input type="text" name="Username" id="Username" placeholder="Enter your name" style= "width: 100%" required autofocus ></td>
+	<td><input type="text" name="Address" placeholder="Street" style= "width: 100%"></td>
+  </tr>
+  
+  <tr>
+  	<td> <p>ZIP: </p></td> 
+    <td><p>City</p></td>
+    <td><p>State</p></td>
+  </tr>
+  
+  
+   <tr>
+   	<td><input type="text" id="ZIP" name="ZIP" pattern="[0-9]*" maxlength="5" required placeholder="ZIP" style= "width: 100%" ></td>
+    <td><input type="text" id="city" name="city" style= "width: 100%"> </td>
+    <td><input type="text" id="state" name="state"style= "width: 100%"> </td>
+  </tr>
+  
+   <tr>
+    <td><p>Phone number:</p></td>
+   	<td><p>Email:</p></td>
+    <td><p>Website:</p></td>
+  </tr>
+  
+   <tr>
+    <td><input type="number" name="Tnumber" placeholder="###-###_####" style= "width: 100%"></td>
+   	<td><input type="text" name="email" placeholder="example@domain.com" required style= "width: 100%"></td>
+    <td><input type="text" name="url" placeholder="http://domainName.com" style= "width: 100%" ></td>
+  </tr>
+  
+  <tr> 
+  	<td><p>Date of Survey:</p></td>
+  	<td><p> What did you like the most about GMU campus?</p></td>
+    <td><p> How did you become interested in GMU?</p></td>
+  
+  </tr>
+  
+  <tr>
+  	<td> <input type="text" id="datepicker" name="surveyDate" placeholder="" style= "width: 100%" ></td>
+  	<td>	
+		<input type="checkbox" id="students" name="interest[]" value="Students" >
+			<label for="students">Students</label><br>
+		<input type="checkbox" id="campus" name="interest[]" value="Campus">
+			<label for="campus">Campus</label><br>
+			<input type="checkbox" id="DormRoom" name="interest[]" value="Dorm Rooms">
+		<label for="DormRoom">Dorm Rooms</label><br>
+			<input type="checkbox" id="location" name="interest[]" value="Location">
+		<label for="location">Location</label><br>
+			<input type="checkbox" id="Atmosphere" name="interest[]" value="Atmosphere">
+		<label for="Atmosphere">Atmosphere</label><br>
+			<input type="checkbox" id="Sports" name="interest[]" value="Sports">
+		<label for="Sports">Sports</label><br>
+	 </td>
+	
+	<td> 
+
+		<input type="radio" id="friends" name="Howinterest[]" value="friends">
+			<label for="friends">Friends</label><br>
+		<input type="radio" id="Television" name="Howinterest[]" value="Television">
+			<label for="Television">Television</label>  <br>  
+		<input type="radio" id="Internet" name="Howinterest[]" value="Internet">
+			<label for="Internet">Internet</label> <br>
+				<input type="radio" id="Other" name="Howinterest[]" value="Other">
+			<label for="Other">Other</label>
+	</td>
+  
+  
+   </tr>
+  <tr>
+  
+  
+   <td><p>Graduation Month</p></td>
+   <td><p>Graduation Year:</p></td>
+   <td><p> How Likely are you going to recommend the school to others?</p> </td>
+   </tr>
+   
+   
+  <tr> 
+  
+  <td>
+  	  <input list="months" name="months" placeholder="Month" style= "width: 100%">
+	  <datalist id="months">
+			<option value="January">
+			<option value="February ">
+			<option value="March ">
+			<option value="April">
+			<option value="May">
+			<option value="June">
+			 <option value="July ">
+			<option value="August  ">
+			<option value="September">
+			<option value="October">
+			<option value="November">
+			<option value="December">
+	  </datalist>
+  </td>
+  <td>
+  <input type="text" name="year" placeholder="Year" style= "width: 100%">
+  </td>
+  <td>
+  <select id="recommendation" name="recommendation" style= "width: 100%">
+	  <option value="verylikely">Very likely</option>
+	  <option value="likely">Likely</option>
+	  <option value="unlikely">Unlikely</option>
+	</select>
+  </td>
+  
+  </tr>
+  
+  <tr>
+	  <td><p>Do you have any comments?</p></td>
+	  <td><p>Enter at least ten comma separated numbers ranging from 1 through 100</p></td>
+	  <td><p> Reset Form</p></td>
+	  
+  </tr>
+  <tr>
+	  <td>	<textarea name="comment"  rows="6" cols="50" id="comment" placeholder="Enter your comment here" style= "width: 100%" > </textarea>
+	  </td>
+	  <td>	<input id="AvgData" type="text" name="AvgData" placeholder="" onmouseout="validateInput()" style= "width: 100%" ><br>
+	  <output id="msg" name="msg"></output>
+	  </td>
+	  <td> 	<button type="button" onclick='clearForm()' style= "width: 100%">Reset</button>
+	  </td>
+  </tr>
+  <tr>
+	  <td></td>
+	  <td>
+	  	<a href="redirect.html">
+	<input type="submit" placeholder="Submit" onclick= "return validateForm()" style= "width: 100%">
+	</a>
+	  </td>
+	  <td></td>
+  </tr>
+  
+</table>
+
+	
+
+
+
+
+</form>
+</div>
+<div id="locator" title="Please visit http://www.gmu.edu for more information.">
+<img src="GMU.png"><br>
+</div>
+
+
+</body>
+</html>
