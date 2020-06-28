@@ -105,8 +105,8 @@ input {
   
   <tr> 
   	<td><p>Date of Survey:</p></td>
-  	<td><p> What did you like the most about GMU campus?</p></td>
-    <td><p> How did you become interested in GMU?</p></td>
+  	<td><p> What did you like the most about Gcampus?</p></td>
+    <td><p> How did you become interested ?</p></td>
   
   </tr>
   
